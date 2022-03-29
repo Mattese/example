@@ -1,3 +1,4 @@
+import { Typography } from "@mui/material";
 import React from "react";
 import { TodoInterface } from "../../types";
 
@@ -6,10 +7,7 @@ interface TodoProps {
 }
 
 const Todo: React.FC<TodoProps> = ({ todo }) => {
-  const handleOnClick = () => {
-    window.location.href = "/detail";
-  };
-  return <div onClick={handleOnClick}>{todo.title}</div>;
+  return <Typography variant="h4">{todo.title}</Typography>;
 };
 
 export default React.memo(Todo);

@@ -1,4 +1,6 @@
+import { Box, Button, Card } from "@mui/material";
 import { useState, useCallback, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { TodoInterface } from "../../types";
 import Todo from "../components/Todo";
 import TodoContext from "../contexts/todoContext";
@@ -26,12 +28,34 @@ const todos = (): Promise<TodoInterface[]> => {
 
 export const Dashboard = () => {
   const todos = useContext(TodoContext);
+  const navigate = useNavigate();
 
   return (
-    <div>
+    <Box
+      sx={{ marginTop: 10 }}
+      justifyContent="center"
+      display="flex"
+      flexDirection="row"
+      gap={2}
+    >
       {todos.map((todo, index) => (
-        <Todo key={index} todo={todo} />
+        <Card
+          sx={{
+            padding: 2,
+            textAlign: "center",
+          }}
+        >
+          <Todo key={index} todo={todo} />
+
+          <Button
+            onClick={() => navigate(`/todo/${todo.id}`)}
+            sx={{ marginTop: 3 }}
+            variant="contained"
+          >
+            Go to detail
+          </Button>
+        </Card>
       ))}
-    </div>
+    </Box>
   );
 };
