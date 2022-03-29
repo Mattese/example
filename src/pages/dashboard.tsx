@@ -1,10 +1,7 @@
-import { useCallback, useEffect, useState } from "react";
-import { TodoInterface } from "../types";
+import { useState, useCallback, useEffect } from "react";
+import { TodoInterface } from "../../types";
+import Todo from "../components/Todo";
 
-import Todo from "./components/Todo";
-import AppRoutes from "./routes";
-
-// rework this into regular api call, feel free to use any open api
 const todos = (): Promise<TodoInterface[]> => {
   return new Promise((res) =>
     setTimeout(() => {
@@ -26,7 +23,7 @@ const todos = (): Promise<TodoInterface[]> => {
   );
 };
 
-function App() {
+export const Dashboard = () => {
   const [state, setState] = useState<TodoInterface[]>([]);
 
   const loadTodos = useCallback(async () => {
@@ -40,9 +37,9 @@ function App() {
 
   return (
     <div>
-      <AppRoutes />
+      {state.map((todo, index) => (
+        <Todo key={index} todo={todo} />
+      ))}
     </div>
   );
-}
-
-export default App;
+};
