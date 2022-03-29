@@ -1,6 +1,7 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useContext } from "react";
 import { TodoInterface } from "../../types";
 import Todo from "../components/Todo";
+import TodoContext from "../contexts/todoContext";
 
 const todos = (): Promise<TodoInterface[]> => {
   return new Promise((res) =>
@@ -24,20 +25,11 @@ const todos = (): Promise<TodoInterface[]> => {
 };
 
 export const Dashboard = () => {
-  const [state, setState] = useState<TodoInterface[]>([]);
-
-  const loadTodos = useCallback(async () => {
-    const awaitedTodos = await todos();
-    if (awaitedTodos.length > 0) setState([...awaitedTodos]);
-  }, []);
-
-  useEffect(() => {
-    loadTodos();
-  }, []);
+  const todos = useContext(TodoContext);
 
   return (
     <div>
-      {state.map((todo, index) => (
+      {todos.map((todo, index) => (
         <Todo key={index} todo={todo} />
       ))}
     </div>
