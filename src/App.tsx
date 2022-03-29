@@ -1,24 +1,47 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useCallback, useEffect, useState } from "react";
+import { TodoInterface } from "../types";
+
+import Todo from "./components/Todo";
+
+// rework this into regular api call, feel free to use any open api
+const todos = (): Promise<TodoInterface[]> => {
+  return new Promise((res) =>
+    setTimeout(() => {
+      res([
+        {
+          id: "1",
+          title: "Go shopping",
+        },
+        {
+          id: "2",
+          title: "Job interview",
+        },
+        {
+          id: "3",
+          title: "Prepare homework",
+        },
+      ]);
+    }, 100)
+  );
+};
 
 function App() {
+  const [state, setState] = useState<TodoInterface[]>([]);
+
+  const loadTodos = useCallback(async () => {
+    const awaitedTodos = await todos();
+    if (awaitedTodos.length > 0) setState([...awaitedTodos]);
+  }, []);
+
+  useEffect(() => {
+    loadTodos();
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      {state.map((todo, index) => (
+        <Todo key={index} todo={todo} />
+      ))}
     </div>
   );
 }
